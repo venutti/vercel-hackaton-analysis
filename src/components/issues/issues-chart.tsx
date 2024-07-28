@@ -5,121 +5,75 @@ import { Label, Pie, PieChart } from "recharts";
 import {
   ChartConfig,
   ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
 } from "@/components/ui/chart";
-import { NodeNextRequest } from "next/dist/server/base-http/node";
+import { ProjectMetrics } from "@/lib/interfaces";
 
-const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 190, fill: "var(--color-other)" },
-];
-
-const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
-  chrome: {
-    label: "Chrome",
-    color: "hsl(var(--chart-1))",
-  },
-  safari: {
-    label: "Safari",
-    color: "hsl(var(--chart-2))",
-  },
-  firefox: {
-    label: "Firefox",
-    color: "hsl(var(--chart-3))",
-  },
-  edge: {
-    label: "Edge",
-    color: "hsl(var(--chart-4))",
-  },
-  other: {
-    label: "Other",
-    color: "hsl(var(--chart-5))",
-  },
-} satisfies ChartConfig;
-
-type Props = {
-  issuesCount: number;
-  isFullDeployedCount: number;
-  isOnlyDeployedCount: number;
-  onlyUsesVercelCount: number;
-};
+type Props = ProjectMetrics;
 
 export default function IssuesChart({
-  issuesCount,
-  isFullDeployedCount,
-  isOnlyDeployedCount,
-  onlyUsesVercelCount,
+  totalProjects,
+  fullyCompliantCount,
+  nonCompliantCount,
+  onlyDeployedCount,
+  onlyVercelSDKCount,
 }: Props) {
   const chartConfig = {
-    projects: {
-      label: "Proyectos",
-    },
-    isFullDeployedCount: {
+    fullyCompliantCount: {
       label: "Proyectos completos ",
       color: "hsl(var(--chart-1))",
     },
-    isOnlyDeployedCount: {
+    onlyDeployedCount: {
       label: "Solo deployados ",
       color: "hsl(var(--chart-2))",
     },
-    onlyUsesVercelCount: {
+    onlyVercelSDKCount: {
       label: "Solo usan Vercel ",
       color: "hsl(var(--chart-3))",
     },
-    other: {
+    nonCompliantCount: {
       label: "No cumplen los requisitos ",
       color: "hsl(var(--chart-4))",
     },
   } satisfies ChartConfig;
 
-  const otherCount =
-    issuesCount -
-    isFullDeployedCount -
-    isOnlyDeployedCount -
-    onlyUsesVercelCount;
-
   const chartData = [
     {
-      type: "isFullDeployedCount",
-      count: isFullDeployedCount,
-      fill: chartConfig.isFullDeployedCount?.color,
+      type: "fullyCompliantCount",
+      count: fullyCompliantCount,
+      fill: chartConfig.fullyCompliantCount?.color,
     },
     {
-      type: "isOnlyDeployedCount",
-      count: isOnlyDeployedCount,
-      fill: chartConfig.isOnlyDeployedCount?.color,
+      type: "onlyDeployedCount",
+      count: onlyDeployedCount,
+      fill: chartConfig.onlyDeployedCount?.color,
     },
     {
-      type: "onlyUsesVercelCount",
-      count: onlyUsesVercelCount,
-      fill: chartConfig.onlyUsesVercelCount?.color,
+      type: "onlyVercelSDKCount",
+      count: onlyVercelSDKCount,
+      fill: chartConfig.onlyVercelSDKCount?.color,
     },
-    { type: "other", count: otherCount, fill: chartConfig.other?.color },
-  ];
+    {
+      type: "nonCompliantCount",
+      count: nonCompliantCount,
+      fill: chartConfig.nonCompliantCount?.color,
+    },
+  ].filter((data) => data.count > 0);
 
   return (
     <ChartContainer
       config={chartConfig}
-      className="mx-auto aspect-square max-h-[250px]"
+      className="mx-auto aspect-square max-h-[300px] pb-0 [&_.recharts-pie-label-text]:fill-foreground"
     >
       <PieChart>
-        <ChartTooltip
-          cursor={false}
-          content={<ChartTooltipContent hideLabel />}
-        />
         <Pie
+          label
           data={chartData}
           dataKey="count"
           nameKey="type"
           innerRadius={60}
-          strokeWidth={5}
+          strokeWidth={2}
         >
           <Label
             content={({ viewBox }) => {
@@ -136,7 +90,7 @@ export default function IssuesChart({
                       y={viewBox.cy}
                       className="fill-foreground text-3xl font-bold"
                     >
-                      {issuesCount.toLocaleString()}
+                      {totalProjects.toLocaleString()}
                     </tspan>
                     <tspan
                       x={viewBox.cx}
@@ -151,6 +105,10 @@ export default function IssuesChart({
             }}
           />
         </Pie>
+        <ChartLegend
+          content={<ChartLegendContent />}
+          className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center"
+        />
       </PieChart>
     </ChartContainer>
   );

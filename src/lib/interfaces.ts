@@ -21,3 +21,11 @@ export interface Project {
   projectUrl: string;
   instructions: string;
 }
+
+export interface ProjectMetrics {
+  totalProjects: number;
+  fullyCompliantCount: number;
+  onlyDeployedCount: number;
+  onlyVercelSDKCount: number;
+  nonCompliantCount: number;
+}

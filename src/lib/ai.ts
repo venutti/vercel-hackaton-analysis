@@ -1,7 +1,7 @@
-import { generateObject } from "ai";
+import { generateObject, generateText } from "ai";
 import { openai } from "@ai-sdk/openai";
 import { z } from "zod";
-import { Project } from "./interfaces";
+import { Project, ProjectMetrics } from "./interfaces";
 import { cache } from "react";
 
 const projectSchema = z.object({
@@ -43,5 +43,36 @@ export const generateProjectJSON = cache(
     });
 
     return object;
+  }
+);
+
+export const generateMetricsResume = cache(
+  async ({
+    totalProjects,
+    fullyCompliantCount,
+    nonCompliantCount,
+    onlyDeployedCount,
+    onlyVercelSDKCount,
+  }: ProjectMetrics): Promise<string> => {
+    const { text } = await generateText({
+      model: openai("gpt-4o-mini"),
+      prompt: `Vercel ha lanzado una hackatón de proyectos para que usen Vercel SDK AI, un nuevo paquete.
+      Los proyectos tienen 2 requisitos para participar. Deben usar Vercel SDK AI de alguna forma. Y pueden estar desplegados y funcionales.
+      El único requisito obligatorio es usar Vercel SDK AI.
+
+      Se recolectaron estas métricas de los proyectos que participan:
+      Total de proyectos: ${totalProjects}
+      Cantidad de proyectos que cumplen los 2 requisitos: ${fullyCompliantCount}
+      Cantidad de proyectos que solo usan Vercel SDK AI: ${onlyVercelSDKCount}
+      Cantidad de proyectos que solo están deployados: ${onlyDeployedCount}
+      Cantidad de proyectos que no cumplen ningun requisito: ${nonCompliantCount}
+
+      Basandote en esa información, generá y devolvé un texto a modo de resumen que pueda concluir una idea teniendo en cuenta esas métricas.
+      El texto generado tiene que tener un máximo de 1 oración. Debe ser breve y no contener información redundante. No debés incluir los números de las métricas, ya que estarán mostrados en un gráfico de torta. 
+      El texto generado debe funcionar como descripción al gráfico de torta.
+      El texto debe concluir una idea basandose en los datos, no tiene que describirlos.
+      `,
+    });
+    return text;
   }
 );

@@ -2,51 +2,61 @@ import { getProjectsInfo } from "@/lib/issues";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "../ui/card";
 import IssuesChart from "./issues-chart";
-import { SparklesIcon } from "lucide-react";
+import IssuesResume from "./issues-resume";
+import { Suspense } from "react";
 
 export default async function IssuesInfo() {
-  const issuesInfo = await getProjectsInfo();
+  const projectsInfo = await getProjectsInfo();
 
-  const issuesCount = issuesInfo.length;
-  let isFullDeployedCount = 0;
-  let isOnlyDeployedCount = 0;
-  let onlyUsesVercelCount = 0;
+  const totalProjects = projectsInfo.length;
+  let fullyCompliantCount = 0;
+  let onlyDeployedCount = 0;
+  let onlyVercelSDKCount = 0;
+  let nonCompliantCount = 0;
 
-  for (const issue of issuesInfo) {
-    if (issue.isDeployed && issue.usesVercel) {
-      isFullDeployedCount++;
-    } else if (issue.isDeployed) {
-      isOnlyDeployedCount++;
-    } else if (issue.usesVercel) {
-      onlyUsesVercelCount++;
+  for (const project of projectsInfo) {
+    if (project.isDeployed && project.usesVercel) {
+      fullyCompliantCount++;
+    } else if (project.isDeployed) {
+      onlyDeployedCount++;
+    } else if (project.usesVercel) {
+      onlyVercelSDKCount++;
+    } else {
+      nonCompliantCount++;
     }
   }
 
   return (
-    <Card className="flex flex-col">
-      <CardHeader className="items-center pb-0">
+    <Card className="flex flex-col bg-indigo-950 max-w-md">
+      <CardHeader className="flex items-center pb-0">
         <CardTitle>Distribución de los proyectos</CardTitle>
-        <CardDescription>
-          Desglose de los proyectos según los requisitos que cumplen
-        </CardDescription>
       </CardHeader>
+
       <CardContent className="flex-1 pb-0">
         <IssuesChart
-          issuesCount={issuesCount}
-          isFullDeployedCount={isFullDeployedCount}
-          isOnlyDeployedCount={isOnlyDeployedCount}
-          onlyUsesVercelCount={onlyUsesVercelCount}
+          totalProjects={totalProjects}
+          fullyCompliantCount={fullyCompliantCount}
+          nonCompliantCount={nonCompliantCount}
+          onlyDeployedCount={onlyDeployedCount}
+          onlyVercelSDKCount={onlyVercelSDKCount}
         />
       </CardContent>
-      <CardFooter className="flex gap-2 text-sm">
-        <SparklesIcon className="stroke-primary" />
-        La mayoría de los proyectos están completamente deployados
+
+      <CardFooter>
+        <Suspense fallback={"Cargando..."}>
+          <IssuesResume
+            totalProjects={totalProjects}
+            fullyCompliantCount={fullyCompliantCount}
+            nonCompliantCount={nonCompliantCount}
+            onlyDeployedCount={onlyDeployedCount}
+            onlyVercelSDKCount={onlyVercelSDKCount}
+          />
+        </Suspense>
       </CardFooter>
     </Card>
   );

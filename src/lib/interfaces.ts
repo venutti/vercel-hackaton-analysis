@@ -1,4 +1,22 @@
-export interface Issue {
+export interface Project {
+  htmlUrl: string;
+  title: string;
+  user: {
+    avatarUrl: string;
+    htmlUrl: string;
+    name: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+  body: string;
+  usesVercel: boolean;
+  isDeployed: boolean;
+  projectName: string;
+  repoUrl: string;
+  projectUrl: string;
+}
+
+export interface IssueApiResponse {
   html_url: string;
   title: string;
   user: {
@@ -11,15 +29,12 @@ export interface Issue {
   body: string;
 }
 
-export interface Project {
-  usesVercel: boolean;
-  isDeployed: boolean;
-  name: string;
-  projectName: string;
-  projectDescription: string;
-  repoUrl: string;
-  projectUrl: string;
-  instructions: string;
+export interface Evaluation {
+  category: string;
+  originality: number;
+  complexity: number;
+  utility: number;
+  quality: number;
 }
 
 export interface ProjectMetrics {

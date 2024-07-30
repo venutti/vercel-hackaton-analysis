@@ -3,6 +3,20 @@ import { IssueApiResponse, Project } from "./interfaces";
 const ISSUES_URL =
   "https://api.github.com/repos/midudev/hackaton-vercel-2024/issues";
 
+function extractGithubRepoUrlFromText(text: string): string {
+  const githubRepoUrlRegex =
+    /https:\/\/github\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+/g;
+  const matches = text.match(githubRepoUrlRegex);
+  return matches ? matches[0] : "";
+}
+
+function extractValidUrlFromText(text: string): string {
+  const validUrlRegex =
+    /(?:https?:\/\/[^\s\)]+|[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})(?=[\s\)]|$)/g;
+  const matches = text.match(validUrlRegex);
+  return matches ? matches[0] : "";
+}
+
 function extractProjectFromIssue(data: IssueApiResponse): Project {
   const project = {
     htmlUrl: data.html_url,
@@ -52,17 +66,21 @@ function extractProjectFromIssue(data: IssueApiResponse): Project {
   }
 
   if (repoUrlMatch) {
-    project.repoUrl = repoUrlMatch[1]
+    const rawRepoUrl = repoUrlMatch[1]
       .replaceAll("\n", "")
       .replaceAll("\r", "")
       .trim();
+
+    project.repoUrl = extractGithubRepoUrlFromText(rawRepoUrl);
   }
 
   if (projectUrlMatch) {
-    project.projectUrl = projectUrlMatch[1]
+    const rawProjectUrl = projectUrlMatch[1]
       .replaceAll("\n", "")
       .replaceAll("\r", "")
       .trim();
+
+    project.projectUrl = extractValidUrlFromText(rawProjectUrl);
   }
 
   return project;
@@ -80,7 +98,9 @@ export async function getProjects(): Promise<Project[]> {
       params.set("per_page", issuesPerPage.toString());
       params.set("state", "open");
 
-      const res = await fetch(ISSUES_URL + "?" + params.toString());
+      const res = await fetch(ISSUES_URL + "?" + params.toString(), {
+        cache: "no-store",
+      });
 
       if (!res.ok) {
         throw new Error("Failed to fetch issues");

@@ -98,9 +98,7 @@ export async function getProjects(): Promise<Project[]> {
       params.set("per_page", issuesPerPage.toString());
       params.set("state", "open");
 
-      const res = await fetch(ISSUES_URL + "?" + params.toString(), {
-        cache: "no-store",
-      });
+      const res = await fetch(ISSUES_URL + "?" + params.toString());
 
       if (!res.ok) {
         throw new Error("Failed to fetch issues");

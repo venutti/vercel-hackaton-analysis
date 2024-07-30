@@ -1,4 +1,3 @@
-import { getProjectsInfo } from "@/lib/issues";
 import {
   Card,
   CardContent,
@@ -6,20 +5,24 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import IssuesChart from "./issues-chart";
-import IssuesResume from "./issues-resume";
+import DistributionChart from "./distribution-chart";
+import AIResume from "./ai-resume";
 import { Suspense } from "react";
+import { LoaderCircleIcon } from "lucide-react";
+import { Project } from "@/lib/interfaces";
 
-export default async function IssuesInfo() {
-  const projectsInfo = await getProjectsInfo();
+type Props = {
+  projects: Project[];
+};
 
-  const totalProjects = projectsInfo.length;
+export default async function ProjectsResume({ projects }: Props) {
+  const totalProjects = projects.length;
   let fullyCompliantCount = 0;
   let onlyDeployedCount = 0;
   let onlyVercelSDKCount = 0;
   let nonCompliantCount = 0;
 
-  for (const project of projectsInfo) {
+  for (const project of projects) {
     if (project.isDeployed && project.usesVercel) {
       fullyCompliantCount++;
     } else if (project.isDeployed) {
@@ -32,13 +35,13 @@ export default async function IssuesInfo() {
   }
 
   return (
-    <Card className="flex flex-col bg-indigo-950 max-w-md">
-      <CardHeader className="flex items-center pb-0">
+    <Card className="flex flex-col bg-indigo-950 w-full">
+      <CardHeader className="flex items-center">
         <CardTitle>Distribución de los proyectos</CardTitle>
       </CardHeader>
 
-      <CardContent className="flex-1 pb-0">
-        <IssuesChart
+      <CardContent className="flex-1 pt-2 pb-0">
+        <DistributionChart
           totalProjects={totalProjects}
           fullyCompliantCount={fullyCompliantCount}
           nonCompliantCount={nonCompliantCount}
@@ -48,8 +51,12 @@ export default async function IssuesInfo() {
       </CardContent>
 
       <CardFooter>
-        <Suspense fallback={"Cargando..."}>
-          <IssuesResume
+        <Suspense
+          fallback={
+            <LoaderCircleIcon className="animate-spin text-muted-foreground mx-auto size-5" />
+          }
+        >
+          <AIResume
             totalProjects={totalProjects}
             fullyCompliantCount={fullyCompliantCount}
             nonCompliantCount={nonCompliantCount}

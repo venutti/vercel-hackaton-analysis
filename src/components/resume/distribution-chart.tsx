@@ -12,7 +12,7 @@ import { ProjectMetrics } from "@/lib/interfaces";
 
 type Props = ProjectMetrics;
 
-export default function IssuesChart({
+export default function DistributionChart({
   totalProjects,
   fullyCompliantCount,
   nonCompliantCount,

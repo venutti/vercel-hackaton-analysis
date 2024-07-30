@@ -36,7 +36,7 @@ export default async function ProjectsResume({ projects }: Props) {
 
   return (
     <Card className="flex flex-col bg-indigo-950 w-full">
-      <CardHeader className="flex items-center">
+      <CardHeader className="flex items-center pb-0">
         <CardTitle>Distribución de los proyectos</CardTitle>
       </CardHeader>
 

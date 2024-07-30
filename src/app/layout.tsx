@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Análisis del Hackaton Vercel",
+  title: "Hackaton Vercel 2024 - IA",
   description:
     "Aplicación para categorizar y evaluar los diferentes proyectos que participan de la Hackaton de Vercel creada por @midudev",
 };

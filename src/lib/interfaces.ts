@@ -44,3 +44,5 @@ export interface ProjectMetrics {
   onlyVercelSDKCount: number;
   nonCompliantCount: number;
 }
+
+export type ProjectWithEvaluation = Project & Evaluation;

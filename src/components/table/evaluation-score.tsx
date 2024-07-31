@@ -22,9 +22,9 @@ export default function EvaluationScore({ score }: Props) {
           r="16"
           fill="none"
           className="stroke-current text-neutral-700"
-          stroke-width="2"
-          stroke-dasharray="75 100"
-          stroke-linecap="round"
+          strokeWidth="2"
+          strokeDasharray="75 100"
+          strokeLinecap="round"
         ></circle>
         <circle
           cx="18"
@@ -36,9 +36,9 @@ export default function EvaluationScore({ score }: Props) {
             formattedScore <= 40 && "text-red-500",
             formattedScore >= 70 && "text-green-500"
           )}
-          stroke-width="3"
-          stroke-dasharray={`${scoreSpan} 100`}
-          stroke-linecap="round"
+          strokeWidth="3"
+          strokeDasharray={`${scoreSpan} 100`}
+          strokeLinecap="round"
         ></circle>
       </svg>
 

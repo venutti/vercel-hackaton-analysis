@@ -3,8 +3,11 @@
 import {
   flexRender,
   getCoreRowModel,
-  getPaginationRowModel,
+  getFilteredRowModel,
   useReactTable,
+  SortingState,
+  getSortedRowModel,
+  VisibilityState,
 } from "@tanstack/react-table";
 
 import {
@@ -19,22 +22,58 @@ import {
 import { ProjectWithEvaluation } from "@/lib/interfaces";
 import { columns } from "./columns";
 import { Button } from "../ui/button";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 
 type Props = {
   projects: ProjectWithEvaluation[];
 };
 
 export default function Table({ projects }: Props) {
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    totalScore: false,
+  });
+
   const table = useReactTable({
     data: projects,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    state: {
+      sorting,
+      columnVisibility,
+    },
   });
+
+  const isShowingPodium = !!table
+    .getAllColumns()
+    .find((col) => col.id === "totalScore")
+    ?.getIsSorted();
+
+  const handleShowPodium = () => {
+    table
+      .getAllColumns()
+      .find((col) => col.id === "totalScore")
+      ?.toggleSorting(true);
+  };
 
   return (
     <div>
+      <div className="flex mb-4 justify-end gap-2 items-center">
+        <p className="mr-auto text-sm">
+          Todos estos proyectos fueron rigurosamente puntuados
+        </p>
+        <Button onClick={handleShowPodium}>
+          {isShowingPodium ? "Este es el podio" : "Mostrar podio"}
+        </Button>
+        <Button variant="ghost" onClick={() => table.resetSorting()}>
+          Resetear filtros
+        </Button>
+      </div>
+
       <div className="rounded-md border">
         <UITable>
           <TableHeader>
@@ -58,10 +97,7 @@ export default function Table({ projects }: Props) {
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
+                <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(
@@ -84,40 +120,6 @@ export default function Table({ projects }: Props) {
             )}
           </TableBody>
         </UITable>
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => table.firstPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          <ChevronLeftIcon />
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Anterior
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Siguiente
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => table.lastPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          <ChevronRightIcon />
-        </Button>
       </div>
     </div>
   );

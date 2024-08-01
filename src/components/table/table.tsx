@@ -23,6 +23,7 @@ import { ProjectWithEvaluation } from "@/lib/interfaces";
 import { columns } from "./columns";
 import { Button } from "../ui/button";
 import { useState } from "react";
+import Podium from "./podium";
 
 type Props = {
   projects: ProjectWithEvaluation[];
@@ -66,9 +67,11 @@ export default function Table({ projects }: Props) {
         <p className="mr-auto">
           Todos estos proyectos fueron rigurosamente puntuados
         </p>
-        <Button size="lg" onClick={handleShowPodium}>
-          {isShowingPodium ? "Este es el podio" : "Mostrar podio"}
-        </Button>
+        {!isShowingPodium && (
+          <Button size="lg" onClick={handleShowPodium}>
+            Mostrar podio
+          </Button>
+        )}
         <Button size="lg" variant="ghost" onClick={() => table.resetSorting()}>
           Resetear filtros
         </Button>
@@ -96,18 +99,27 @@ export default function Table({ projects }: Props) {
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
+              table.getRowModel().rows.map((row, index) =>
+                index < 3 && isShowingPodium ? (
+                  <Podium
+                    key={row.id}
+                    top={index + 1}
+                    project={row.original}
+                    colSpan={row.getVisibleCells().length}
+                  />
+                ) : (
+                  <TableRow key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                )
+              )
             ) : (
               <TableRow>
                 <TableCell

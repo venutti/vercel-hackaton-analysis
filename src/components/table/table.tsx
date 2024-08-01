@@ -22,7 +22,7 @@ import {
 import { ProjectWithEvaluation } from "@/lib/interfaces";
 import { columns } from "./columns";
 import { Button } from "../ui/button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type Props = {
   projects: ProjectWithEvaluation[];
@@ -63,13 +63,13 @@ export default function Table({ projects }: Props) {
   return (
     <div>
       <div className="flex mb-4 justify-end gap-2 items-center">
-        <p className="mr-auto text-sm">
+        <p className="mr-auto">
           Todos estos proyectos fueron rigurosamente puntuados
         </p>
-        <Button onClick={handleShowPodium}>
+        <Button size="lg" onClick={handleShowPodium}>
           {isShowingPodium ? "Este es el podio" : "Mostrar podio"}
         </Button>
-        <Button variant="ghost" onClick={() => table.resetSorting()}>
+        <Button size="lg" variant="ghost" onClick={() => table.resetSorting()}>
           Resetear filtros
         </Button>
       </div>

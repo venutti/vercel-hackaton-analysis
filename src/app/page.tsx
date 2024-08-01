@@ -8,9 +8,9 @@ export default async function Home() {
   const projects = await getProjects();
 
   return (
-    <main className="flex min-h-screen flex-col items-center py-14 px-24 gap-6">
+    <main className="py-14 px-24">
       <Header />
-      <div className="flex flex-col gap-6 lg:flex-row">
+      <div className="flex flex-col justify-center gap-6 lg:flex-row mt-8">
         <ProjectsResume projects={projects} />
         <ProjectsTimeline projects={projects} />
       </div>

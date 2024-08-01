@@ -14,8 +14,8 @@ export default function Header() {
         9 de Julio - 6 de Agosto
       </p>
 
-      <Accordion className="w-[80ch]" type="single" collapsible>
-        <AccordionItem value="item-1" className="border-b-0">
+      <Accordion className="w-[80ch] mx-auto my-6" type="single" collapsible>
+        <AccordionItem value="item-1" className="border-y">
           <AccordionTrigger>
             <div className="flex gap-2 text-yellow-500 text-lg items-center">
               <TriangleAlertIcon className="size-6" />

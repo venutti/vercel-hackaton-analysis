@@ -36,7 +36,7 @@ export default async function TimeInfo({ projects }: Props) {
   });
 
   return (
-    <Card className="flex flex-col bg-slate-900 w-full">
+    <Card className="flex flex-col bg-slate-900 w-full max-w-3xl px-6 justify-around">
       <CardHeader className="flex items-center">
         <CardTitle>Frecuencia de subidas</CardTitle>
         <CardDescription>
@@ -44,7 +44,7 @@ export default async function TimeInfo({ projects }: Props) {
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="flex-1">
+      <CardContent>
         <TimelineChart dates={projectsByDateCount} />
       </CardContent>
     </Card>

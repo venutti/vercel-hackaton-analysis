@@ -35,7 +35,7 @@ export default async function ProjectsResume({ projects }: Props) {
   }
 
   return (
-    <Card className="flex flex-col bg-indigo-950 w-full">
+    <Card className="flex flex-col bg-indigo-950 w-full max-w-md">
       <CardHeader className="flex items-center pb-0">
         <CardTitle>Distribución de los proyectos</CardTitle>
       </CardHeader>
@@ -51,19 +51,13 @@ export default async function ProjectsResume({ projects }: Props) {
       </CardContent>
 
       <CardFooter>
-        <Suspense
-          fallback={
-            <LoaderCircleIcon className="animate-spin text-muted-foreground mx-auto size-5" />
-          }
-        >
-          <AIResume
-            totalProjects={totalProjects}
-            fullyCompliantCount={fullyCompliantCount}
-            nonCompliantCount={nonCompliantCount}
-            onlyDeployedCount={onlyDeployedCount}
-            onlyVercelSDKCount={onlyVercelSDKCount}
-          />
-        </Suspense>
+        <AIResume
+          totalProjects={totalProjects}
+          fullyCompliantCount={fullyCompliantCount}
+          nonCompliantCount={nonCompliantCount}
+          onlyDeployedCount={onlyDeployedCount}
+          onlyVercelSDKCount={onlyVercelSDKCount}
+        />
       </CardFooter>
     </Card>
   );

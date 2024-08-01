@@ -21,7 +21,10 @@ export default function TimelineChart({ dates }: Props) {
   } satisfies ChartConfig;
 
   return (
-    <ChartContainer className="mx-auto max-h-[300px]" config={chartConfig}>
+    <ChartContainer
+      className="w-[90%] mx-auto max-h-[270px]"
+      config={chartConfig}
+    >
       <LineChart
         accessibilityLayer
         data={dates}
@@ -37,9 +40,8 @@ export default function TimelineChart({ dates }: Props) {
         />
         <XAxis
           dataKey="date"
-          tickLine={false}
-          axisLine={false}
           tickMargin={8}
+          interval="equidistantPreserveStart"
         />
         <ChartTooltip
           cursor={true}

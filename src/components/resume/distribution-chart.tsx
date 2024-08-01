@@ -21,7 +21,7 @@ export default function DistributionChart({
 }: Props) {
   const chartConfig = {
     fullyCompliantCount: {
-      label: "Proyectos completos ",
+      label: "Proyectos deployados ",
       color: "hsl(var(--chart-1))",
     },
     onlyDeployedCount: {

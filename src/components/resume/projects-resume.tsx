@@ -1,14 +1,12 @@
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "../ui/card";
 import DistributionChart from "./distribution-chart";
-import AIResume from "./ai-resume";
-import { Suspense } from "react";
-import { LoaderCircleIcon } from "lucide-react";
 import { Project } from "@/lib/interfaces";
 
 type Props = {
@@ -38,9 +36,10 @@ export default async function ProjectsResume({ projects }: Props) {
     <Card className="flex flex-col bg-indigo-950 w-full max-w-md">
       <CardHeader className="flex items-center pb-0">
         <CardTitle>Distribución de los proyectos</CardTitle>
+        <CardDescription>Balance de los requisitos cumplidos</CardDescription>
       </CardHeader>
 
-      <CardContent className="flex-1 pt-2 pb-0">
+      <CardContent className="flex-1">
         <DistributionChart
           totalProjects={totalProjects}
           fullyCompliantCount={fullyCompliantCount}
@@ -49,16 +48,6 @@ export default async function ProjectsResume({ projects }: Props) {
           onlyVercelSDKCount={onlyVercelSDKCount}
         />
       </CardContent>
-
-      <CardFooter>
-        <AIResume
-          totalProjects={totalProjects}
-          fullyCompliantCount={fullyCompliantCount}
-          nonCompliantCount={nonCompliantCount}
-          onlyDeployedCount={onlyDeployedCount}
-          onlyVercelSDKCount={onlyVercelSDKCount}
-        />
-      </CardFooter>
     </Card>
   );
 }

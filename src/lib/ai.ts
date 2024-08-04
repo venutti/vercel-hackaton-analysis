@@ -1,13 +1,8 @@
 import { generateObject } from "ai";
-import { createOpenAI } from "@ai-sdk/openai";
+import { openai } from "@ai-sdk/openai";
 import { z } from "zod";
 import { Evaluation, Project } from "./interfaces";
 import { cache } from "react";
-
-const groq = createOpenAI({
-  baseURL: "https://api.groq.com/openai/v1",
-  apiKey: process.env.GROQ_API_KEY,
-});
 
 const evaluationSchema = z.object({
   category: z.string(),
@@ -22,7 +17,7 @@ export const evaluationsSchema = z.array(evaluationSchema);
 export const evaluateProjects = cache(
   async (projects: Project[]): Promise<Evaluation[]> => {
     const { object: evaluations } = await generateObject({
-      model: groq("llama-3.1-70b-versatile"),
+      model: openai("gpt-4o-mini"),
       schema: evaluationsSchema,
       prompt: `
       Tenés que actuar como un reviewer de la Hackatón Vercel 2024, en donde cada participante tiene que subir un proyecto que use el nuevo paquete Vercel AI SDK de alguna manera.

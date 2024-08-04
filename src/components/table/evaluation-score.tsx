@@ -6,8 +6,7 @@ type Props = {
 
 export default function EvaluationScore({ score }: Props) {
   const TOTAL_CIRCLE_SPAN = 75;
-  const formattedScore = Math.ceil(score * 100);
-  const scoreSpan = (formattedScore * TOTAL_CIRCLE_SPAN) / 100;
+  const scoreSpan = (score * TOTAL_CIRCLE_SPAN) / 100;
 
   return (
     <div className="relative size-12 mx-auto">
@@ -33,8 +32,8 @@ export default function EvaluationScore({ score }: Props) {
           fill="none"
           className={cn(
             "stroke-current text-yellow-500",
-            formattedScore <= 40 && "text-red-500",
-            formattedScore >= 70 && "text-green-500"
+            score <= 40 && "text-red-500",
+            score >= 70 && "text-green-500"
           )}
           strokeWidth="3"
           strokeDasharray={`${scoreSpan} 100`}
@@ -43,7 +42,7 @@ export default function EvaluationScore({ score }: Props) {
       </svg>
 
       <div className="absolute top-1/2 start-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-        <span className="text-sm">{formattedScore}</span>
+        <span className="text-sm">{score}</span>
       </div>
     </div>
   );

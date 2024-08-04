@@ -23,7 +23,6 @@ import { ProjectWithEvaluation } from "@/lib/interfaces";
 import { columns } from "./columns";
 import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
-import Podium from "./podium";
 
 type Props = {
   projects: ProjectWithEvaluation[];

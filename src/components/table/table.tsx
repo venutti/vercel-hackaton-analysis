@@ -22,7 +22,7 @@ import {
 import { ProjectWithEvaluation } from "@/lib/interfaces";
 import { columns } from "./columns";
 import { Button } from "../ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Podium from "./podium";
 
 type Props = {
@@ -31,6 +31,9 @@ type Props = {
 
 export default function Table({ projects }: Props) {
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [message, setMessage] = useState(
+    "Todos estos proyectos fueron rigurosamente puntuados"
+  );
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     totalScore: false,
   });
@@ -54,6 +57,14 @@ export default function Table({ projects }: Props) {
     .find((col) => col.id === "totalScore")
     ?.getIsSorted();
 
+  useEffect(() => {
+    if (isShowingPodium) {
+      setMessage("¡Tachán! Acá están los mejores de los mejores");
+    } else {
+      setMessage("Todos estos proyectos fueron rigurosamente puntuados");
+    }
+  }, [isShowingPodium]);
+
   const handleShowPodium = () => {
     table
       .getAllColumns()
@@ -64,11 +75,18 @@ export default function Table({ projects }: Props) {
   return (
     <div>
       <div className="flex mb-4 justify-end gap-2 items-center">
-        <p className="mr-auto">
-          Todos estos proyectos fueron rigurosamente puntuados
-        </p>
+        <p className="mr-auto">{message}</p>
         {!isShowingPodium && (
-          <Button size="lg" onClick={handleShowPodium}>
+          <Button
+            size="lg"
+            onClick={handleShowPodium}
+            onMouseEnter={() =>
+              setMessage("¿Estás seguro? Vas a romper el suspenso...")
+            }
+            onMouseLeave={() =>
+              setMessage("Todos estos proyectos fueron rigurosamente puntuados")
+            }
+          >
             Mostrar podio
           </Button>
         )}
@@ -99,27 +117,18 @@ export default function Table({ projects }: Props) {
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row, index) =>
-                index < 3 && isShowingPodium ? (
-                  <Podium
-                    key={row.id}
-                    top={index + 1}
-                    project={row.original}
-                    colSpan={row.getVisibleCells().length}
-                  />
-                ) : (
-                  <TableRow key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                )
-              )
+              table.getRowModel().rows.map((row) => (
+                <TableRow key={row.id}>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
             ) : (
               <TableRow>
                 <TableCell

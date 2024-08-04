@@ -7,7 +7,7 @@ type Props = {
 
 export default function ProjectsTable({ projects }: Props) {
   return (
-    <div className="max-w-6xl mx-auto mt-10">
+    <div id="projects" className="max-w-6xl mx-auto pt-10">
       <h2 className="text-3xl font-semibold">Proyectos</h2>
       <TableContainer projects={projects} />
     </div>

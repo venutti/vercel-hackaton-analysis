@@ -6,11 +6,38 @@ import TooltipLink from "./tooltip-link";
 import { ArrowUpIcon, CircleDotIcon, CodeIcon, RocketIcon } from "lucide-react";
 import EvaluationScore from "./evaluation-score";
 import { Button } from "../ui/button";
+import Podium from "./podium";
+import { Badge } from "../ui/badge";
 
 export const columns: ColumnDef<ProjectWithEvaluation>[] = [
   {
+    id: "projectName",
     header: "Nombre del proyecto",
-    accessorKey: "projectName",
+    cell: ({ row, table }) => {
+      const { projectName, category } = row.original;
+
+      const isShowingPodium = !!table
+        .getAllColumns()
+        .find((col) => col.id === "totalScore")
+        ?.getIsSorted();
+
+      const visibleRows = table.getRowModel().rows;
+      const rowIndexInView = visibleRows.findIndex(
+        (visibleRow) => visibleRow.id === row.id
+      );
+      const isPodiumCell = rowIndexInView < 5 && isShowingPodium;
+
+      return (
+        <div>
+          {isPodiumCell ? (
+            <Podium project={row.original} top={rowIndexInView + 1} />
+          ) : (
+            <p>{projectName}</p>
+          )}
+          <Badge className="mt-1">{category}</Badge>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "originality",

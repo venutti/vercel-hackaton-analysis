@@ -1,14 +1,12 @@
 import { Project } from "@/lib/interfaces";
-import { TableCell } from "../ui/table";
 import { cn } from "@/lib/utils";
 
 type Props = {
   top: number;
   project: Project;
-  colSpan: number;
 };
 
-export default function Podium({ top, project, colSpan }: Props) {
+export default function Podium({ top, project }: Props) {
   let classes = "";
 
   switch (top) {
@@ -22,17 +20,13 @@ export default function Podium({ top, project, colSpan }: Props) {
       classes = "text-amber-800";
       break;
     default:
+      classes = "text-slate-700";
+      break;
   }
 
   return (
-    <tr className="border-b">
-      <TableCell colSpan={colSpan}>
-        <span
-          className={cn("text-lg font-semibold block text-center", classes)}
-        >
-          #{top} {project.projectName}
-        </span>
-      </TableCell>
-    </tr>
+    <p className={cn("text-lg font-semibold", classes)}>
+      #{top} {project.projectName}
+    </p>
   );
 }

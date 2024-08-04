@@ -26,32 +26,20 @@ export default function Header() {
             Esta página está diseñada para extraer y analizar los datos de los
             proyectos que participan en el Hackatón Vercel 2024. Mediante el uso
             del Vercel SDK AI se evalúan y analizan TODOS los proyectos,
-            puntuándolos y categorizándolos de manera imparcial.{" "}
-            <a
-              className="text-purple-500 hover:underline"
-              target="_blank"
-              href="https://github.com/venutti/vercel-hackaton-analysis"
-            >
-              Acá podés ver el repo.
-            </a>
-            <br />
+            puntuándolos y categorizándolos de manera imparcial. <br />
             <br />
             Las métricas generadas son absolutamente objetivas. No se premiará
             con un mayor puntaje al autor de esta página. Aunque me encantaría
-            ganar, el repositorio es público. Si querés perder horas y horas
-            tratando de ver si hice trampa podés hacerlo. Suerte con eso ;).
-            <br />
-            <br />
-            <strong>¿Descubriste que hice trampa?</strong> ¡Perfecto! Podés
-            presentar tu queja directamente al{" "}
+            ganar,{" "}
             <a
-              className="text-purple-500 hover:underline"
+              className="text-purple-400 hover:underline"
               target="_blank"
-              href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+              href="https://github.com/venutti/vercel-hackaton-analysis"
             >
-              instagram de Midu
+              el repositorio es público
             </a>
-            , buchón.
+            . Si querés perder horas y horas tratando de ver si hice trampa
+            podés hacerlo. Suerte con eso ;).
             <br />
             <br />
             ¡Que gane el mejor!

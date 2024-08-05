@@ -1,5 +1,5 @@
-import { evaluateProjects } from "@/lib/ai";
-import { Project } from "@/lib/interfaces";
+import { evaluateProject } from "@/lib/ai";
+import { Project, ProjectWithEvaluation } from "@/lib/interfaces";
 import {
   Card,
   CardContent,
@@ -16,11 +16,12 @@ type Props = {
 };
 
 export default async function ProjectCategories({ projects }: Props) {
-  const evaluations = await evaluateProjects(projects);
-  const projectsWithEvaluations = projects.map((project, index) => ({
-    ...project,
-    ...evaluations[index],
-  }));
+  const projectsWithEvaluations: ProjectWithEvaluation[] = await Promise.all(
+    projects.map(async (project) => {
+      const evaluation = await evaluateProject(project);
+      return { ...project, ...evaluation };
+    })
+  );
 
   const categoriesCount = projectsWithEvaluations.reduce((acc, project) => {
     if (!acc[project.category]) {

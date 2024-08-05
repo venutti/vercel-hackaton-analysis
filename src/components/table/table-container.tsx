@@ -1,17 +1,18 @@
-import { Project } from "@/lib/interfaces";
+import { Project, ProjectWithEvaluation } from "@/lib/interfaces";
 import Table from "./table";
-import { evaluateProjects } from "@/lib/ai";
+import { evaluateProject } from "@/lib/ai";
 
 type Props = {
   projects: Project[];
 };
 
 export default async function TableContainer({ projects }: Props) {
-  const evaluations = await evaluateProjects(projects);
-  const projectsWithEvaluations = projects.map((project, index) => ({
-    ...project,
-    ...evaluations[index],
-  }));
+  const projectsWithEvaluations: ProjectWithEvaluation[] = await Promise.all(
+    projects.map(async (project) => {
+      const evaluation = await evaluateProject(project);
+      return { ...project, ...evaluation };
+    })
+  );
 
   return <Table projects={projectsWithEvaluations} />;
 }

@@ -5,7 +5,7 @@ import { Evaluation, Project } from "./interfaces";
 import { cache } from "react";
 
 const categories = [
-  "Automatización",
+  "Turismo",
   "Análisis de Datos",
   "Asistentes Virtuales",
   "Reconocimiento de Imagen",

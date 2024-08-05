@@ -35,10 +35,10 @@ export const evaluateProject = cache(
 
       Tu deber es extraer los siguientes datos del proyecto que te voy a pasar para analizar:
       *category: categoría en la cual puedas encasillar el proyecto, dentro de las siguientes disponibles: ${categories}
-      *complexity: un número del 0 al 100 que represente la complejidad del proyecto. 0 es muy simple y 100 es muy complejo
-      *originality: un número del 0 al 100 que represente la originalidad del proyecto. 0 es poco original y 100 es muy original
-      *quality: un número del 0 al 100 que represente la calidad de la documentación proporcionada del proyecto. 0 es muy baja y 100 es muy alta
-      *utility: un número del 0 al 100 que represente la utilidad del proyecto. 0 es poco útil y 100 es muy útil
+      *complexity: un número del 0 al 100 que represente la complejidad del proyecto. Ten en cuenta aspectos como la tecnología usada, el nivel de detalle y la cantidad de funcionalidades implementadas. 0 es muy simple y 100 es muy complejo.
+      *originality: un número del 0 al 100 que represente la originalidad del proyecto. Considera qué tan novedosa es la idea y si aporta algo nuevo o único en comparación con otros proyectos. 0 es poco original y 100 es muy original.
+      *quality: un número del 0 al 100 que represente la calidad de la documentación proporcionada del proyecto. Evalúa la claridad, el detalle y la facilidad para entender e implementar el proyecto siguiendo la documentación. 0 es muy baja y 100 es muy alta.
+      *utility: un número del 0 al 100 que represente la utilidad del proyecto. Considera qué tan útil y aplicable es el proyecto para los usuarios finales o el público objetivo. 0 es poco útil y 100 es muy útil.
 
       Esta es el proyecto:
       ${project.body}

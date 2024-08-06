@@ -1,6 +1,6 @@
 "use client";
 
-import Image from 'next/image';
+import Image from "next/image";
 import { ProjectWithEvaluation } from "@/lib/interfaces";
 import { ColumnDef } from "@tanstack/react-table";
 import TooltipLink from "./tooltip-link";
@@ -16,10 +16,10 @@ export const columns: ColumnDef<ProjectWithEvaluation>[] = [
     header: "Avatar",
     cell: ({ row }) => {
       const avatarUrl = row.original.user.avatarUrl;
-      const gisthubUserURL = row.original.user.htmlUrl;
+      const githubUserURL = row.original.user.htmlUrl;
       return (
         <div className="flex items-center">
-          <TooltipLink href={gisthubUserURL} label={"Ver perfil en GitHub"}>
+          <TooltipLink href={githubUserURL} label={"Ver perfil en GitHub"}>
             <Image
               src={avatarUrl}
               alt="Avatar"
@@ -30,7 +30,7 @@ export const columns: ColumnDef<ProjectWithEvaluation>[] = [
           </TooltipLink>
         </div>
       );
-    }
+    },
   },
   {
     id: "projectName",

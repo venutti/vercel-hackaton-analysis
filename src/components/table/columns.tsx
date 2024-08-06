@@ -1,5 +1,6 @@
 "use client";
 
+import Image from 'next/image';
 import { ProjectWithEvaluation } from "@/lib/interfaces";
 import { ColumnDef } from "@tanstack/react-table";
 import TooltipLink from "./tooltip-link";
@@ -10,6 +11,27 @@ import Podium from "./podium";
 import { Badge } from "../ui/badge";
 
 export const columns: ColumnDef<ProjectWithEvaluation>[] = [
+  {
+    id: "avatar",
+    header: "Avatar",
+    cell: ({ row }) => {
+      const avatarUrl = row.original.user.avatarUrl;
+      const gisthubUserURL = row.original.user.htmlUrl;
+      return (
+        <div className="flex items-center">
+          <TooltipLink href={gisthubUserURL} label={"Ver perfil en GitHub"}>
+            <Image
+              src={avatarUrl}
+              alt="Avatar"
+              width={40}
+              height={40}
+              className="rounded-md"
+            />
+          </TooltipLink>
+        </div>
+      );
+    }
+  },
   {
     id: "projectName",
     header: "Nombre del proyecto",

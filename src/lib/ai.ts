@@ -1,5 +1,5 @@
 import { generateObject } from "ai";
-import { openai } from "@ai-sdk/openai";
+import { google } from "@ai-sdk/google";
 import { z } from "zod";
 import { Evaluation, Project } from "./interfaces";
 import { cache } from "react";
@@ -28,7 +28,7 @@ const evaluationSchema = z.object({
 export const evaluateProject = cache(
   async (project: Project): Promise<Evaluation> => {
     const { object: evaluation } = await generateObject({
-      model: openai("gpt-4o-mini"),
+      model: google("models/gemini-1.5-pro-latest"),
       schema: evaluationSchema,
       prompt: `
       Tenés que actuar como un reviewer de la Hackatón Vercel 2024, en donde cada participante tiene que subir un proyecto que use el nuevo paquete Vercel AI SDK de alguna manera.

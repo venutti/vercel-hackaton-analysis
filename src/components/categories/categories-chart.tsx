@@ -36,26 +36,15 @@ export default function CategoriesChart({ categories }: Props) {
     <ChartContainer config={chartConfig}>
       <BarChart accessibilityLayer data={categories} layout="vertical">
         <CartesianGrid horizontal={false} />
-        <YAxis dataKey="category" type="category" hide />
+        <YAxis dataKey="category" type="category" tick={() => <span></span>} />
         <XAxis dataKey="count" type="number" tickLine={false} />
-        <ChartTooltip
-          cursor={false}
-          content={<ChartTooltipContent hideLabel />}
-        />
+        <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
         <Bar
           dataKey="count"
           layout="vertical"
           radius={5}
           fill="hsl(var(--chart-5))"
-        >
-          <LabelList
-            dataKey="category"
-            position="insideLeft"
-            offset={15}
-            className="block w-full fill-white overflow-visible"
-            fontSize={14}
-          />
-        </Bar>
+        ></Bar>
       </BarChart>
     </ChartContainer>
   );
